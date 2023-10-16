@@ -8,6 +8,7 @@
         <TargetFramework Condition="$([MSBuild]::IsOSPlatform('Windows'))">net7.0-windows</TargetFramework>
         <ApplicationIcon>Resources\refresher.ico</ApplicationIcon>
         <BuiltInComInteropSupport Condition="'$(TargetFramework)' == 'net7.0-windows'">true</BuiltInComInteropSupport>
+        <RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX'))">osx-x64;osx-arm64</RuntimeIdentifiers>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -18,8 +19,9 @@
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
       <PackageReference Include="ELFSharp" Version="2.17.2" />
       <PackageReference Include="Eto.Forms" Version="2.7.5" />
-      <PackageReference Condition="'$(TargetFramework)' != 'net7.0-windows'" Include="Eto.Platform.Gtk" Version="2.7.5" />
+      <PackageReference Condition="'$(TargetFramework)' == 'net7.0' And !$([MSBuild]::IsOSPlatform('OSX'))" Include="Eto.Platform.Gtk" Version="2.7.5" />
       <PackageReference Condition="'$(TargetFramework)' == 'net7.0-windows'" Include="Eto.Platform.Wpf" Version="2.7.5" />
+      <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="Eto.Platform.Mac64" Version="2.7.5" />
       <EmbeddedResource Include="Resources\refresher.ico" LogicalName="refresher.ico" />
       <PackageReference Include="FluentFTP" Version="47.1.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
