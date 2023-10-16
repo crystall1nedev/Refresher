@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
     name: Build, Test, and Upload Builds (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
@@ -49,6 +49,16 @@ jobs:
       shell: bash
       run: dotnet publish -c Release -r win-x64 --self-contained Refresher //p:Version=${VERSION}
       
+    - name: Publish for macOS Intel
+      if: matrix.os == 'macos-latest'
+      shell: bash
+      run: dotnet publish -c Release -r osx-x64 --self-contained Refresher //p:Version=${VERSION}
+      
+    - name: Publish for macOS Apple Silicon
+      if: matrix.os == 'macos-latest'
+      shell: bash
+      run: dotnet publish -c Release -r osx-arm64 --self-contained Refresher //p:Version=${VERSION}
+      
     - name: Upload Linux x64 build
       if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v3.1.1
@@ -64,5 +74,23 @@ jobs:
       with:
           name: "Refresher for Windows x64"
           path: "Refresher/bin/Release/net7.0-windows/win-x64/publish/"
+          if-no-files-found: error
+          retention-days: 30
+          
+    - name: Upload macOS Intel build
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v3.1.1
+      with:
+          name: "Refresher for macOS Intel"
+          path: "Refresher/bin/Release/net7.0/osx-x64"
+          if-no-files-found: error
+          retention-days: 30
+          
+    - name: Upload macOS Apple Silicon build
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v3.1.1
+      with:
+          name: "Refresher for macOS Apple Silicon"
+          path: "Refresher/bin/Release/net7.0/osx-arm64"
           if-no-files-found: error
           retention-days: 30

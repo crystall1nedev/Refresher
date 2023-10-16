@@ -25,6 +25,13 @@ jobs:
             check-name: 'Build, Test, and Upload Builds (windows-latest)'
             repo-token: ${{ secrets.GITHUB_TOKEN }}
             wait-interval: 10
+      - name: Wait for macOS builds
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+            ref: ${{ github.ref }}
+            check-name: 'Build, Test, and Upload Builds (macos-latest)'
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            wait-interval: 10
       - name: Download artifacts
         id: download-artifact
         uses: dawidd6/action-download-artifact@v2
