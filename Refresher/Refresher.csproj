@@ -4,9 +4,9 @@
         <OutputType>Exe</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <ApplicationIcon>Resources\refresher.ico</ApplicationIcon>
         <TargetFramework Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net7.0</TargetFramework>
         <TargetFramework Condition="$([MSBuild]::IsOSPlatform('Windows'))">net7.0-windows</TargetFramework>
-        <ApplicationIcon>Resources\refresher.ico</ApplicationIcon>
         <BuiltInComInteropSupport Condition="'$(TargetFramework)' == 'net7.0-windows'">true</BuiltInComInteropSupport>
         <RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX'))">osx-x64;osx-arm64</RuntimeIdentifiers>
     </PropertyGroup>
@@ -22,11 +22,18 @@
       <PackageReference Condition="'$(TargetFramework)' == 'net7.0' And !$([MSBuild]::IsOSPlatform('OSX'))" Include="Eto.Platform.Gtk" Version="2.7.5" />
       <PackageReference Condition="'$(TargetFramework)' == 'net7.0-windows'" Include="Eto.Platform.Wpf" Version="2.7.5" />
       <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="Eto.Platform.Mac64" Version="2.7.5" />
-      <EmbeddedResource Include="Resources\refresher.ico" LogicalName="refresher.ico" />
       <PackageReference Include="FluentFTP" Version="47.1.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="SCEToolSharp" Version="1.0.9" />
-      <EmbeddedResource Include="Resources\Allefresher.prx" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\refresher.ico" LogicalName="refresher.ico" />
+        <Content Include="Resources\Icon.icns">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>Icon.icns</Link>
+        </Content>
+        <EmbeddedResource Include="Resources\Allefresher.prx" />
     </ItemGroup>
 
 
