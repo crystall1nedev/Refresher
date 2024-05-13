@@ -118,7 +118,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         id: src
-        
+
       - name: Download artifacts
         id: download
         uses: actions/download-artifact@v3.0.2
@@ -136,8 +136,6 @@ jobs:
 
             cd ${{steps.download.outputs.download-path}}/refresher-macos-arm64
             zip -r "${{steps.download.outputs.download-path}}/refresher-macos-arm64.zip" .
-
-            cd ${{steps.src}}
         
       - uses: ncipollo/release-action@v1.14.0
         name: "Create release"
