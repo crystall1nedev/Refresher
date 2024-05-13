@@ -138,9 +138,9 @@ jobs:
         name: "Create release"
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
           draft: true
           generateReleaseNotes: true
           bodyFile: "RELEASE_NOTES.md"
-          artifactErrorsFailBuild: true
           artifacts: |
             *.zip
