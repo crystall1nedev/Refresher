@@ -130,12 +130,17 @@ jobs:
 
             cd ${{steps.download.outputs.download-path}}/Refresher_for_macOS_x64
             zip -r "${{steps.download.outputs.download-path}}/Refresh_for_macOS_x64.zip" .
+
+            cd ${{steps.download.outputs.download-path}}/Refresher_for_macOS_ARM64
+            zip -r "${{steps.download.outputs.download-path}}/Refresh_for_macOS_ARM64.zip" .
         
-      - uses: marvinpinto/action-automatic-releases@latest
+      - uses: ncipollo/release-action@latest
         name: "Create release"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
+          token: "${{ secrets.GITHUB_TOKEN }}"
           draft: true
-          files: |
+          generateReleaseNotes: true
+          body: "test"
+          artifactErrorsFailBuild: true
+          artifacts: |
             *.zip
