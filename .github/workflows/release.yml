@@ -134,4 +134,4 @@ jobs:
           draft: true
           generateReleaseNotes: true
           bodyFile: "RELEASE_NOTES.md"
-          artifacts: "*.zip,*.tar.gz"
+          artifacts: "Refresher_for_*.zip,Refresher_for_*.tar.gz"
