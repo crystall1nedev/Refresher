@@ -135,5 +135,5 @@ jobs:
           generateReleaseNotes: true
           bodyFile: "RELEASE_NOTES.md"
           artifacts: |
-            *.zip
+            *.zip,
             *.tar.gz
