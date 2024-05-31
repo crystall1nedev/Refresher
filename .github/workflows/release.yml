@@ -61,27 +61,25 @@ jobs:
         working-directory: Refresher/bin/Release/net8.0/osx-arm64/publish/
         run: rm -rfv ./*.app/Contents/MacOS/*.app && codesign -fs - --deep *.app
         
-      # We need to tarball our macOS and Linux builds, since the ZIP files created by upload-artifact do not retain extended unix file permissions, 
-      # which means the executable bit is lost, which is un-ideal for end users, who will hit weird errors (especially relating to code signing on macOS)
       - name: 'Tar macOS x64 build'
         if: matrix.os == 'macos-latest'
         working-directory: Refresher/bin/Release/net8.0/osx-x64/publish/
-        run: tar -cvf ../../../../../../Refresher-x64.tar *.app
+        run: tar -czvf ../../../../../../Refresher-x64.tar.gz *.app
       - name: 'Tar macOS ARM64 build'
         if: matrix.os == 'macos-latest'
         working-directory: Refresher/bin/Release/net8.0/osx-arm64/publish/
-        run: tar -cvf ../../../../../../Refresher-arm64.tar *.app 
+        run: tar -czvf ../../../../../../Refresher-arm64.tar.gz *.app 
       - name: 'Tar Linux x64'
         if: matrix.os == 'ubuntu-latest'
         working-directory: Refresher/bin/Release/net8.0/linux-x64/publish/
-        run: tar -cvf ../../../../../../Refresher.tar * 
+        run: tar -czvf ../../../../../../Refresher.tar.gz * 
 
       - name: Upload Linux x64 build
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v3.1.3
         with:
             name: "Refresher_for_Linux_x64"
-            path: "Refresher.tar"
+            path: "Refresher_for_Linux_x64.tar.gz"
             if-no-files-found: error
             retention-days: 1
 
@@ -99,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
             name: "Refresher_for_macOS_x64"
-            path: "Refresher-x64.tar"
+            path: "Refresher_for_macOS_x64.tar.gz"
             if-no-files-found: error
             retention-days: 1
   
@@ -108,7 +106,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
             name: "Refresher_for_macOS_ARM64"
-            path: "Refresher-arm64.tar"
+            path: "Refresher_for_macOS_ARM64.tar.gz"
             if-no-files-found: error
             retention-days: 1
   release:
@@ -127,15 +125,6 @@ jobs:
         run: |
             cd ${{steps.download.outputs.download-path}}/Refresher_for_Windows_x64
             zip -r "${{steps.download.outputs.download-path}}/Refresher_for_Windows_x64.zip" .
-            
-            cd ${{steps.download.outputs.download-path}}/Refresher_for_Linux_x64
-            zip -r "${{steps.download.outputs.download-path}}/Refresher_for_Linux_x64.zip" .
-
-            cd ${{steps.download.outputs.download-path}}/Refresher_for_macOS_x64
-            zip -r "${{steps.download.outputs.download-path}}/Refresher_for_macOS_x64.zip" .
-
-            cd ${{steps.download.outputs.download-path}}/Refresher_for_macOS_ARM64
-            zip -r "${{steps.download.outputs.download-path}}/Refresher_for_macOS_ARM64.zip" .
         
       - uses: ncipollo/release-action@v1.14.0
         name: "Create release"
@@ -147,3 +136,4 @@ jobs:
           bodyFile: "RELEASE_NOTES.md"
           artifacts: |
             *.zip
+            *.tar.gz
