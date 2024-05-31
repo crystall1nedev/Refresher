@@ -114,9 +114,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        id: src
-
       - name: Download artifacts
         id: download
         uses: actions/download-artifact@v3.0.2
@@ -125,6 +122,10 @@ jobs:
         run: |
             cd ${{steps.download.outputs.download-path}}/Refresher_for_Windows_x64
             zip -r "${{steps.download.outputs.download-path}}/Refresher_for_Windows_x64.zip" .
+
+            mv "${{steps.download.outputs.download-path}}/Refresher_for_Linux_x64/*.tar.gz .
+            mv "${{steps.download.outputs.download-path}}/Refresher_for_macOS_x64/*.tar.gz .
+            mv "${{steps.download.outputs.download-path}}/Refresher_for_macOS_ARM64/*.tar.gz .
         
       - uses: ncipollo/release-action@v1.14.0
         name: "Create release"
@@ -136,5 +137,4 @@ jobs:
           bodyFile: "RELEASE_NOTES.md"
           artifacts: |
             *.zip
-            *.tar
             *.tar.gz
