@@ -64,11 +64,7 @@ jobs:
       
     # We need to tarball our macOS and Linux builds, since the ZIP files created by upload-artifact do not retain extended unix file permissions, 
     # which means the executable bit is lost, which is un-ideal for end users, who will hit weird errors (especially relating to code signing on macOS)
-    - name: 'Tar macOS x64 build'
-      if: matrix.os == 'macos-latest'
-      working-directory: Refresher/bin/Release/net8.0/osx-x64/publish/
-      run: tar -cvf ../../../../../../Refresher-x64.tar *.app
-    - name: 'Tar macOS ARM64 build'
+    - name: 'Tar macOS universal2 build'
       if: matrix.os == 'macos-latest'
       working-directory: Refresher/bin/Release/net8.0/osx-universal2/publish/
       run: tar -cvf ../../../../../../Refresher-macOS.tar *.app 
