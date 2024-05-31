@@ -124,6 +124,7 @@ jobs:
             zip -r "${{steps.download.outputs.download-path}}/Refresher_for_Windows_x64.zip" .
 
             cd ${{steps.download.outputs.download-path}}
+            ls -l 
             mv "${{steps.download.outputs.download-path}}/Refresher_for_Linux_x64/*.tar.gz" .
             mv "${{steps.download.outputs.download-path}}/Refresher_for_macOS_x64/*.tar.gz" .
             mv "${{steps.download.outputs.download-path}}/Refresher_for_macOS_ARM64/*.tar.gz" .
